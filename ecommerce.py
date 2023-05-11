@@ -52,5 +52,25 @@ Appliances_button.place(relx = 0.5, rely = 0.58, anchor = CENTER)
 Exit_button=Button(rootleft,text="EXIT",font="times 20 bold",width=17,bd=6,bg="#BC986A",fg="white",activebackground="light blue",command=exit)
 Exit_button.place(relx = 0.5, rely = 0.8, anchor = CENTER)
 
+#Images 
+grocery_image = ImageTk.PhotoImage(Image.open("Images/grocery.png"))
+grocery_label = Label(product, image=grocery_image, height= 320, width = 320)
 
+appliances_image = ImageTk.PhotoImage(Image.open("Images/appliances.png"))
+appliances_label = Label(product, image=appliances_image, height= 320, width = 320)
+
+furniture_image = ImageTk.PhotoImage(Image.open("Images/furniture.png"))
+furniture_label = Label(product, image=furniture_image, height= 325, width = 325)
+
+gym_image = ImageTk.PhotoImage(Image.open("Images/gym.jpg"))
+gym_label = Label(product, image=gym_image, height= 320, width = 320)
+
+electronics_image = ImageTk.PhotoImage(Image.open("Images/electronics.png"))
+electronics_label = Label(product, image=electronics_image, height= 320, width = 320)
+
+#appliances_label.pack()
+#gym_label.pack()
+#electronics_label.pack()
+#furniture_label.pack()
+#grocery_label.pack()
 root.mainloop()
