@@ -24,6 +24,7 @@ heading.place(relx = 0.5, rely = 0.075, anchor=CENTER)
 
 grocery_items = {"Flour": ["Rs.40/kg", 40], "Rice": ["Rs.50/kg", 50], "Bread" : ["Rs.35 per packet", 35], 
                  "Butter" : ["Rs. 50 per packet", 50], "Milk" : ["Rs.100/litre", 100]}
+
 cart = {}
 def exit():
     root.destroy()
@@ -35,8 +36,8 @@ def HideAllFrames():
         widget.destroy()
     
 
-Exit_button=Button(rootleft,text="EXIT",font="times 20 bold",width=17,bd=6,bg="#BC986A",fg="white",activebackground="light blue",command=exit)
-Exit_button.place(relx = 0.5, rely = 0.8, anchor = CENTER)
+Exit_button=Button(rootleft,text="EXIT",font="times 20 bold",width=17,bd=6,bg="#ED2939",fg="white",activebackground="light blue",command=exit)
+Exit_button.place(relx = 0.5, rely = 0.82, anchor = CENTER)
 
 #Images 
 grocery_image = ImageTk.PhotoImage(Image.open("Images/grocery.png"))
@@ -52,18 +53,21 @@ gym_label = Label(product, image=gym_image, height= 320, width = 320)
 
 electronics_image = ImageTk.PhotoImage(Image.open("Images/electronics.png"))
 electronics_label = Label(product, image=electronics_image, height= 320, width = 320)
-        
+
+h = 0
 def cartFunc():
     HideAllFrames()
     style = ttk.Style()
     
     style.theme_use('clam')
-    style.configure("Treeview.Heading", font=("Times New Roman", 25))
+    style.configure("Treeview.Heading", font=("Times New Roman", 20))
     style.configure("Treeview",
-                    rowheight = 60,
+                    rowheight = 35,
                     font = ("Times New Roman", 20)
                     )
-    tree = ttk.Treeview(product, column=("Name", "Price", "Quantity", "Total"), show='headings', height=len(cart))
+    global h
+    h = len(cart) + 2
+    tree = ttk.Treeview(product, column=("Name", "Price", "Quantity", "Total"), show='headings', height=h)
     tree.configure()
     tree.column("# 1", anchor=CENTER)
     tree.heading("# 1", text="Name")
@@ -74,10 +78,34 @@ def cartFunc():
     tree.column("# 4", anchor=CENTER)
     tree.heading("# 4", text="Total")
 
-    # Insert the data in Treeview widget
+    TotPrice = 0
     for item in cart:
         tree.insert('', 'end', text="1", values=cart[item])
+        TotPrice += cart[item][3]
+    
+    tree.insert('', 'end', text = "1", values=[" ", " ", " ", " "])
+    tree.insert('', 'end', text = "1", values=["Total Cost ", " ", " ", TotPrice])
     tree.place(relx=0.48, rely=0.4, anchor=CENTER)
+
+    def remove():
+        x = tree.selection()
+        y = tree.item(x)
+        cart.pop(y["values"][0])
+        tree.delete(x)
+        global h
+        h -= 1
+        tree.configure(height = h)
+
+    def checkout():
+        conf = messagebox.askyesno("Confirm", f"Are you sure you want to purchase the items in your cart and exit?")
+        if(conf):
+            root.destroy()
+
+    remove_btn = Button(product,text="Remove",font="Helvetica 20",width=17,bg="#8D8741",fg="white",activebackground="light blue",command=remove,bd=4)
+    remove_btn.place(relx= 0.88, rely = 0.45, anchor=CENTER)
+
+    checkout_btn = Button(product,text="Checkout",font="Helvetica 20",width=17,bg="#8D8741",fg="white",activebackground="light blue",command=checkout,bd=4)
+    checkout_btn.place(relx= 0.88, rely = 0.65, anchor=CENTER)
 
 def GroceryFunc():
     HideAllFrames()
@@ -152,5 +180,8 @@ Furniture_button.place(relx = 0.5, rely = 0.51, anchor = CENTER)
 
 Appliances_button=Button(rootleft,text="Appliances",font="times 20 bold",width=17,bd=6,bg="#659DBD",fg="white",activebackground="light blue",command=HideAllFrames)
 Appliances_button.place(relx = 0.5, rely = 0.58, anchor = CENTER)
+
+cart_button=Button(rootleft,text="CART",font="times 20 bold",width=17,bd=6,bg="#8D8741",fg="white",activebackground="light blue",command=cartFunc)
+cart_button.place(relx = 0.5, rely = 0.75, anchor = CENTER)
 
 root.mainloop()
