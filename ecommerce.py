@@ -24,6 +24,15 @@ heading.place(relx = 0.5, rely = 0.075, anchor=CENTER)
 
 grocery_items = {"Flour": ["Rs.40/kg", 40], "Rice": ["Rs.50/kg", 50], "Bread" : ["Rs.35 per packet", 35], 
                  "Butter" : ["Rs. 50 per packet", 50], "Milk" : ["Rs.100/litre", 100]}
+appliances_items = {"Mixer": ["Rs.2000", 2000], "Juicer": ["Rs.800", 800], "Microwave" : ["Rs.9000", 9000], 
+                 "Fridge" : ["Rs.25000", 25000]}
+furniture_items = {"Wooden Chair": ["Rs.2750", 2750], "Velvet Sofa": ["Rs.19000", 19000], "King-Sized Bed" : ["Rs.34000", 34000], 
+                 "Glass Table" : ["Rs.6000", 6000]}
+gym_items = {"Dumbbell Sets": ["Rs.9000", 9000], "Treadmill": ["Rs.50000", 50000], "Steel Bar" : ["Rs.1750", 1750], 
+                 "Resistance Band" : ["Rs.650", 650]}
+electronics_items = {"Smartphone": ["Rs.45000", 45000], "Wireless Earphones": ["Rs.1350", 1350], "VR Headset" : ["Rs. 32000", 32000], 
+                 "Smart Watch" : ["Rs.6000", 6000]}
+
 
 cart = {}
 def exit():
@@ -85,16 +94,13 @@ def cartFunc():
     
     tree.insert('', 'end', text = "1", values=[" ", " ", " ", " "])
     tree.insert('', 'end', text = "1", values=["Total Cost ", " ", " ", TotPrice])
-    tree.place(relx=0.48, rely=0.4, anchor=CENTER)
+    tree.place(relx=0.48, rely=0.5, anchor=CENTER)
 
     def remove():
         x = tree.selection()
         y = tree.item(x)
         cart.pop(y["values"][0])
-        tree.delete(x)
-        global h
-        h -= 1
-        tree.configure(height = h)
+        cartFunc()
 
     def checkout():
         conf = messagebox.askyesno("Confirm", f"Are you sure you want to purchase the items in your cart and exit?")
@@ -153,11 +159,190 @@ def GroceryFunc():
     sub_btn = Button(product,text="Add To Cart",font="Helvetica 25",width=20,bg="#8D8741",fg="white",activebackground="light blue",command=submit,bd=4)
     sub_btn.place(relx= 0.75, rely = 0.65, anchor=CENTER)
 
+def AppliancesFunc():
+    HideAllFrames()
+    image_label = Label(product, image= appliances_image, height= 320, width = 320)
+    subheading = Label(product, text = "Appliances", font = ("Times New Roman", 30), bg="#FBEEC1")
+    subheading.place(relx = 0.31, rely= 0.534, anchor=CENTER, width= 324)
+    image_label.place(relx = 0.31, rely=0.41, anchor=CENTER)
+   
+    e_text = Label(product, text="Quantity:", width = 20, height = 1, font = ("Times New Roman", 25), bg="#659DBD")
+    e_text.place(relx = 0.6, rely = 0.5, anchor = CENTER)
+    e= Entry(product, width = 23, font=('Times New Roman', 20), justify=CENTER)
+    e.place(relx = 0.79, rely = 0.5, anchor=CENTER)
+    
+    def updatePrice(event):
+        Price.configure(text=(appliances_items[item.get()])[0])
+
+    t_text = Label(product, text="Item:", width = 20, height = 1, font = ("Times New Roman", 25), bg="#659DBD")
+    t_text.place(relx = 0.6, rely = 0.35, anchor = CENTER)
+    item_names =  list(appliances_items.keys())
+    item = StringVar()
+    item.set(item_names[0])
+
+    p_text = Label(product, text="Price:", width = 20, height = 1, font = ("Times New Roman", 25), bg="#659DBD")
+    p_text.place(relx = 0.6, rely = 0.40, anchor = CENTER)
+    Price = Label(product, text=(appliances_items[item.get()])[0], width = 21, height = 1, font = ("Times New Roman", 20))
+    Price.place(relx = 0.789, rely = 0.4, anchor=CENTER)
+
+    drop = OptionMenu(product, item, *item_names, command=updatePrice)
+    drop.configure(width = 20, height = 1, font = ("Times New Roman", 20))
+    drop.place(relx = 0.68, rely = 0.335)
+
+    def submit():
+        x = e.get()
+        y = item.get()
+        z = (appliances_items[y])[1] * int(x)
+        conf = messagebox.askyesno("Confirm", f"Are you sure you want to purchase {x} items of {y} at total cost of Rs.{z}?")
+        if(conf):
+            if y in cart.keys():
+                cart[y][2] += int(x)
+                cart[y][3] = cart[y][2] * cart[y][1]
+            else:
+                cart[y] = [item.get(), appliances_items[y][1], int(x), z]
+            messagebox.showinfo("Success", "Added to Cart")
+
+    sub_btn = Button(product,text="Add To Cart",font="Helvetica 25",width=20,bg="#8D8741",fg="white",activebackground="light blue",command=submit,bd=4)
+    sub_btn.place(relx= 0.75, rely = 0.65, anchor=CENTER)
+
+def FurnitureFunc():
+        HideAllFrames()
+        image_label = Label(product, image=furniture_image, height= 320, width = 320)
+        subheading = Label(product, text = "Furniture", font = ("Times New Roman", 30), bg="#FBEEC1")
+        subheading.place(relx = 0.31, rely= 0.534, anchor=CENTER, width= 324)
+        image_label.place(relx = 0.31, rely=0.41, anchor=CENTER)
+    
+        e_text = Label(product, text="Quantity:", width = 20, height = 1, font = ("Times New Roman", 25), bg="#659DBD")
+        e_text.place(relx = 0.6, rely = 0.5, anchor = CENTER)
+        e= Entry(product, width = 23, font=('Times New Roman', 20), justify=CENTER)
+        e.place(relx = 0.79, rely = 0.5, anchor=CENTER)
+        
+        def updatePrice(event):
+            Price.configure(text=(furniture_items[item.get()])[0])
+
+        t_text = Label(product, text="Item:", width = 20, height = 1, font = ("Times New Roman", 25), bg="#659DBD")
+        t_text.place(relx = 0.6, rely = 0.35, anchor = CENTER)
+        item_names =  list(furniture_items.keys())
+        item = StringVar()
+        item.set(item_names[0])
+
+        p_text = Label(product, text="Price:", width = 20, height = 1, font = ("Times New Roman", 25), bg="#659DBD")
+        p_text.place(relx = 0.6, rely = 0.40, anchor = CENTER)
+        Price = Label(product, text=(furniture_items[item.get()])[0], width = 21, height = 1, font = ("Times New Roman", 20))
+        Price.place(relx = 0.789, rely = 0.4, anchor=CENTER)
+
+        drop = OptionMenu(product, item, *item_names, command=updatePrice)
+        drop.configure(width = 20, height = 1, font = ("Times New Roman", 20))
+        drop.place(relx = 0.68, rely = 0.335)
+
+        def submit():
+            x = e.get()
+            y = item.get()
+            z = (furniture_items[y])[1] * int(x)
+            conf = messagebox.askyesno("Confirm", f"Are you sure you want to purchase {x} items of {y} at total cost of Rs.{z}?")
+            if(conf):
+                if y in cart.keys():
+                    cart[y][2] += int(x)
+                    cart[y][3] = cart[y][2] * cart[y][1]
+                else:
+                    cart[y] = [item.get(), furniture_items[y][1], int(x), z]
+                messagebox.showinfo("Success", "Added to Cart")
+
+        sub_btn = Button(product,text="Add To Cart",font="Helvetica 25",width=20,bg="#8D8741",fg="white",activebackground="light blue",command=submit,bd=4)
+        sub_btn.place(relx= 0.75, rely = 0.65, anchor=CENTER)
+
+def GymFunc():
+    HideAllFrames()
+    image_label = Label(product, image=gym_image, height= 320, width = 320)
+    subheading = Label(product, text = "Gym", font = ("Times New Roman", 30), bg="#FBEEC1")
+    subheading.place(relx = 0.31, rely= 0.534, anchor=CENTER, width= 324)
+    image_label.place(relx = 0.31, rely=0.41, anchor=CENTER)
+   
+    e_text = Label(product, text="Quantity:", width = 20, height = 1, font = ("Times New Roman", 25), bg="#659DBD")
+    e_text.place(relx = 0.6, rely = 0.5, anchor = CENTER)
+    e= Entry(product, width = 23, font=('Times New Roman', 20), justify=CENTER)
+    e.place(relx = 0.79, rely = 0.5, anchor=CENTER)
+    
+    def updatePrice(event):
+        Price.configure(text=(gym_items[item.get()])[0])
+
+    t_text = Label(product, text="Item:", width = 20, height = 1, font = ("Times New Roman", 25), bg="#659DBD")
+    t_text.place(relx = 0.6, rely = 0.35, anchor = CENTER)
+    item_names =  list(gym_items.keys())
+    item = StringVar()
+    item.set(item_names[0])
+
+    p_text = Label(product, text="Price:", width = 20, height = 1, font = ("Times New Roman", 25), bg="#659DBD")
+    p_text.place(relx = 0.6, rely = 0.40, anchor = CENTER)
+    Price = Label(product, text=(gym_items[item.get()])[0], width = 21, height = 1, font = ("Times New Roman", 20))
+    Price.place(relx = 0.789, rely = 0.4, anchor=CENTER)
+
+    drop = OptionMenu(product, item, *item_names, command=updatePrice)
+    drop.configure(width = 20, height = 1, font = ("Times New Roman", 20))
+    drop.place(relx = 0.68, rely = 0.335)
+
+    def submit():
+        x = e.get()
+        y = item.get()
+        z = (gym_items[y])[1] * int(x)
+        conf = messagebox.askyesno("Confirm", f"Are you sure you want to purchase {x} items of {y} at total cost of Rs.{z}?")
+        if(conf):
+            if y in cart.keys():
+                cart[y][2] += int(x)
+                cart[y][3] = cart[y][2] * cart[y][1]
+            else:
+                cart[y] = [item.get(), gym_items[y][1], int(x), z]
+            messagebox.showinfo("Success", "Added to Cart")
+
+    sub_btn = Button(product,text="Add To Cart",font="Helvetica 25",width=20,bg="#8D8741",fg="white",activebackground="light blue",command=submit,bd=4)
+    sub_btn.place(relx= 0.75, rely = 0.65, anchor=CENTER)
+
+    
 def ElectronicsFunc():
     HideAllFrames()
+    image_label = Label(product, image=electronics_image, height= 320, width = 320)
+    subheading = Label(product, text = "Electronics", font = ("Times New Roman", 30), bg="#FBEEC1")
+    subheading.place(relx = 0.31, rely= 0.534, anchor=CENTER, width= 324)
+    image_label.place(relx = 0.31, rely=0.41, anchor=CENTER)
+   
+    e_text = Label(product, text="Quantity:", width = 20, height = 1, font = ("Times New Roman", 25), bg="#659DBD")
+    e_text.place(relx = 0.6, rely = 0.5, anchor = CENTER)
+    e= Entry(product, width = 23, font=('Times New Roman', 20), justify=CENTER)
+    e.place(relx = 0.79, rely = 0.5, anchor=CENTER)
     
-    
+    def updatePrice(event):
+        Price.configure(text=(electronics_items[item.get()])[0])
 
+    t_text = Label(product, text="Item:", width = 20, height = 1, font = ("Times New Roman", 25), bg="#659DBD")
+    t_text.place(relx = 0.6, rely = 0.35, anchor = CENTER)
+    item_names =  list(electronics_items.keys())
+    item = StringVar()
+    item.set(item_names[0])
+
+    p_text = Label(product, text="Price:", width = 20, height = 1, font = ("Times New Roman", 25), bg="#659DBD")
+    p_text.place(relx = 0.6, rely = 0.40, anchor = CENTER)
+    Price = Label(product, text=(electronics_items[item.get()])[0], width = 21, height = 1, font = ("Times New Roman", 20))
+    Price.place(relx = 0.789, rely = 0.4, anchor=CENTER)
+
+    drop = OptionMenu(product, item, *item_names, command=updatePrice)
+    drop.configure(width = 20, height = 1, font = ("Times New Roman", 20))
+    drop.place(relx = 0.68, rely = 0.335)
+
+    def submit():
+        x = e.get()
+        y = item.get()
+        z = (electronics_items[y])[1] * int(x)
+        conf = messagebox.askyesno("Confirm", f"Are you sure you want to purchase {x} items of {y} at total cost of Rs.{z}?")
+        if(conf):
+            if y in cart.keys():
+                cart[y][2] += int(x)
+                cart[y][3] = cart[y][2] * cart[y][1]
+            else:
+                cart[y] = [item.get(), electronics_items[y][1], int(x), z]
+            messagebox.showinfo("Success", "Added to Cart")
+
+    sub_btn = Button(product,text="Add To Cart",font="Helvetica 25",width=20,bg="#8D8741",fg="white",activebackground="light blue",command=submit,bd=4)
+    sub_btn.place(relx= 0.75, rely = 0.65, anchor=CENTER)
 
 #appliances_label.pack()
 #gym_label.pack()
@@ -172,13 +357,13 @@ Grocery_button.place(relx = 0.5, rely = 0.3, anchor = CENTER)
 Electronics_button=Button(rootleft,text="Electronics",font="times 20 bold",width=17,bd=6,bg="#659DBD",fg="white",activebackground="light blue",command=ElectronicsFunc)
 Electronics_button.place(relx = 0.5, rely = 0.37, anchor = CENTER)
 
-Sports_Gym_button=Button(rootleft,text="Sports and Gym",font="times 20 bold",width=17,bd=6,bg="#659DBD",fg="white",activebackground="light blue",command=cartFunc)
-Sports_Gym_button.place(relx = 0.5, rely = 0.44, anchor = CENTER)
+Gym_button=Button(rootleft,text="Sports and Gym",font="times 20 bold",width=17,bd=6,bg="#659DBD",fg="white",activebackground="light blue",command=GymFunc)
+Gym_button.place(relx = 0.5, rely = 0.44, anchor = CENTER)
 
-Furniture_button=Button(rootleft,text="Furniture",font="times 20 bold",width=17,bd=6,bg="#659DBD",fg="white",activebackground="light blue",command=HideAllFrames)
+Furniture_button=Button(rootleft,text="Furniture",font="times 20 bold",width=17,bd=6,bg="#659DBD",fg="white",activebackground="light blue",command= FurnitureFunc)
 Furniture_button.place(relx = 0.5, rely = 0.51, anchor = CENTER)
 
-Appliances_button=Button(rootleft,text="Appliances",font="times 20 bold",width=17,bd=6,bg="#659DBD",fg="white",activebackground="light blue",command=HideAllFrames)
+Appliances_button=Button(rootleft,text="Appliances",font="times 20 bold",width=17,bd=6,bg="#659DBD",fg="white",activebackground="light blue",command=AppliancesFunc)
 Appliances_button.place(relx = 0.5, rely = 0.58, anchor = CENTER)
 
 cart_button=Button(rootleft,text="CART",font="times 20 bold",width=17,bd=6,bg="#8D8741",fg="white",activebackground="light blue",command=cartFunc)
